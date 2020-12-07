@@ -18,14 +18,21 @@ pipeline {
                 script {
                     
                     dir("cloud-formation") {
-                        foundFiles = bat(script: 'dir /b /a-d', returnStdout: true).split()
-                        echo "${foundFiles}"
-                        foundFiles.each { file ->
-                        build job: 'cloudformation', parameters: [
-                            string(name: 'TEMPLATE_FILE', value: file),
-                            string(name: 'ACTION', value: "create")
-                        ]
-                    }
+                        def files = findFiles() 
+
+                        // files.each{ f -> 
+                        //     if(f.directory) {
+                        //         echo "This is directory: ${f.name} "
+                        //     }
+                        // }
+                        // foundFiles = bat(script: 'dir /b /a-d', returnStdout: true).split()
+                        echo "${files}"
+                        files.each { file ->
+                            build job: 'cloudformation', parameters: [
+                                string(name: 'TEMPLATE_FILE', value: file),
+                                string(name: 'ACTION', value: "create")
+                            ]
+                        }
                     }
                     
                     
