@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'TEMPLATE_FILE', description: 'Yaml file for cloudformation template.'),
+        string(name: 'ACTION', description: 'Cloudformation action to preform.')
+    }
+    stages {
+        stage('Setup') {
+            steps {
+                sh "gradle build"
+                echo 'Building..'
+            }
+        }
+        stage('Upload to S3') {
+            steps {
+                sh 'aws s3 sync . s3://cloud-demo-bucket2918 --exclude "*" --include "packerfile"'
+                sh 'aws s3 sync ./cloud-formation s3://cloud-demo-bucket2918'
+            }
+        }
+        stage('Run Cloudformation') {
+            steps {
+                sh "aws cloudformation ${params.ACTION}-stack --stack-name myteststack --template-body s3://cloud-demo-bucket2918/${params.TEMPLATE_FILE}"
+            }
+        }
+    }
+}

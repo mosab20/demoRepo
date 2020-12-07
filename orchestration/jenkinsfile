@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh "gradle build"
+                echo 'Building..'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                stage ('Starting cloudformation job') {
+                    def foundFiles = sh(script: 'ls -1 cloud-formation', returnStdout: true).split()
+                    foundFiles.each { file ->
+                        build job: 'cloudformation', parameters: [
+                            string(name: 'TEMPLATE_FILE', value: file),
+                            string(name: 'ACTION', value: "create")
+                        ]
+                    }
+                }
+                echo 'Deploying....'
+            }
+        }
+    }
+}
