@@ -29,7 +29,7 @@ pipeline {
                         echo "${files}"
                         files.each { file ->
                             build job: 'cloudformation', parameters: [
-                                string(name: 'TEMPLATE_FILE', value: file),
+                                string(name: 'TEMPLATE_FILE', value: file.name),
                                 string(name: 'ACTION', value: "create")
                             ]
                         }
