@@ -19,7 +19,7 @@ pipeline {
                     def foundFiles
                     dir("cloud-formation") {
                         foundFiles = bat(script: 'dir /b /a-d', returnStdout: true).split()
-                        print(foundFiles)
+                        echo foundFiles
                     }
                     
                     foundFiles.each { file ->
