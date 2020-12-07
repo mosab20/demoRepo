@@ -13,21 +13,21 @@ pipeline {
     stages {
         stage('Setup') {
             steps {
-                bat "aws sts get-caller-identity"
-                bat "aws configure set aws_access_key_id AWS_CREDENTIALS_USR"
-                bat "aws configure set aws_secret_access_key AWS_CREDENTIALS_PSW"
+                // bat "aws sts get-caller-identity"
+                //bat "aws configure set aws_access_key_id AWS_CREDENTIALS_USR"
+                //bat "aws configure set aws_secret_access_key AWS_CREDENTIALS_PSW"
                 echo 'Building..'
             }
         }
         stage('Upload to S3') {
             steps {
-                bat 'aws s3 sync . s3://cloud-demo-bucket2918 --exclude "*" --include "packerfile"'
-                bat 'aws s3 sync ./cloud-formation s3://cloud-demo-bucket2918'
+                bat 'aws s3 sync . s3://cloud-demo-bucket2918 --exclude "*" --include "packerfile --profile produser"'
+                bat 'aws s3 sync ./cloud-formation s3://cloud-demo-bucket2918 --profile produser'
             }
         }
         stage('Run Cloudformation') {
             steps {
-                bat "aws cloudformation ${params.ACTION}-stack --stack-name myteststack --template-body s3://cloud-demo-bucket2918/${params.TEMPLATE_FILE}"
+                bat "aws cloudformation ${params.ACTION}-stack --stack-name myteststack --template-body s3://cloud-demo-bucket2918/${params.TEMPLATE_FILE} --profile produser"
             }
         }
     }
