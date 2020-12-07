@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "gradle build"
+                bat "gradle build"
                 echo 'Building..'
             }
         }
@@ -16,7 +16,7 @@ pipeline {
         stage('Starting cloudformation job') {
             steps {
                 script {
-                    def foundFiles = sh(script: 'ls -1 cloud-formation', returnStdout: true).split()
+                    def foundFiles = bat(script: 'ls -1 cloud-formation', returnStdout: true).split()
                     foundFiles.each { file ->
                         build job: 'cloudformation', parameters: [
                             string(name: 'TEMPLATE_FILE', value: file),
