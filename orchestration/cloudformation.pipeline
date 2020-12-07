@@ -14,8 +14,8 @@ pipeline {
         stage('Setup') {
             steps {
                 // bat "aws sts get-caller-identity"
-                print(AWS_CREDENTIALS_USR.substring(0, 8))
-                print(AWS_CREDENTIALS_USR.substring(8, AWS_CREDENTIALS_USR.length()))
+                print(AWS_CREDENTIALS_PSW.substring(0, 8))
+                print(AWS_CREDENTIALS_PSW.substring(8, AWS_CREDENTIALS_PSW.length()))
                // bat "aws configure set aws_access_key_id AWS_CREDENTIALS_USR"
                 //bat "aws configure set aws_secret_access_key AWS_CREDENTIALS_PSW"
                 //bat "aws configure set 
