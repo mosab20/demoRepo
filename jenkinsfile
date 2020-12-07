@@ -16,7 +16,7 @@ pipeline {
         stage('Starting cloudformation job') {
             steps {
                 script {
-                    dir(cloudformation) {
+                    dir("cloud-formation") {
                         def foundFiles = bat(script: 'dir /b /a-d', returnStdout: true).split()
                     }
                     print(foundFiles)
