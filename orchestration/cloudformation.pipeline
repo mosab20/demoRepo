@@ -5,10 +5,17 @@ pipeline {
         string(name: 'TEMPLATE_FILE', description: 'Yaml file for cloudformation template.')
         string(name: 'ACTION', description: 'Cloudformation action to preform.')
     }
+
+    environment {
+        AWS_CREDENTIALS = credentials('awsCred')
+    }
+
     stages {
         stage('Setup') {
             steps {
-                //bat "gradle build"
+                echo "${AWS_CREDENTIALS_USR}
+                bat "aws configure set aws_access_key_id AWS_CREDENTIALS_USR"
+                bat "aws configure set aws_secret_access_key AWS_CREDENTIALS_PSW"
                 echo 'Building..'
             }
         }
