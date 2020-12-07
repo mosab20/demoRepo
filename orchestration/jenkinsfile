@@ -16,7 +16,10 @@ pipeline {
         stage('Starting cloudformation job') {
             steps {
                 script {
-                    def foundFiles = bat(script: 'dir /b /a-d', returnStdout: true).split()
+                    dir(cloudformation) {
+                        def foundFiles = bat(script: 'dir /b /a-d', returnStdout: true).split()
+                    }
+                    print(foundFiles)
                     foundFiles.each { file ->
                         build job: 'cloudformation', parameters: [
                             string(name: 'TEMPLATE_FILE', value: file),
