@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Run Cloudformation') {
             steps {
-                bat "aws cloudformation ${params.ACTION}-stack --stack-name myteststack --template-body file:s3://cloud-demo-bucket2918/${params.TEMPLATE_FILE} --region us-east-1"
+                bat "aws cloudformation ${params.ACTION}-stack --stack-name IAMstack --template-url https://cloud-demo-bucket2918.s3.amazonaws.com/${params.TEMPLATE_FILE} --region us-east-1 --parameters ParameterKey=PackerTemplateS3BucketLocation,ParameterValue=cloud-demo-bucket2918 --capabilities CAPABILITY_NAMED_IAM"
             }
         }
     }
