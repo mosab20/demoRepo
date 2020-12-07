@@ -13,17 +13,15 @@ pipeline {
                 echo 'Testing..'
             }
         }
-        stage('Deploy') {
+        stage('Starting cloudformation job') {
             steps {
-                stage ('Starting cloudformation job') {
-                    script {
-                        def foundFiles = sh(script: 'ls -1 cloud-formation', returnStdout: true).split()
-                        foundFiles.each { file ->
-                            build job: 'cloudformation', parameters: [
-                                string(name: 'TEMPLATE_FILE', value: file),
-                                string(name: 'ACTION', value: "create")
-                            ]
-                        }
+                script {
+                    def foundFiles = sh(script: 'ls -1 cloud-formation', returnStdout: true).split()
+                    foundFiles.each { file ->
+                        build job: 'cloudformation', parameters: [
+                            string(name: 'TEMPLATE_FILE', value: file),
+                            string(name: 'ACTION', value: "create")
+                        ]
                     }
                 }
                 echo 'Deploying....'
