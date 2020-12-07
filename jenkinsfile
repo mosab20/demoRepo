@@ -19,7 +19,7 @@ pipeline {
                     
                     dir("cloud-formation") {
                         foundFiles = bat(script: 'dir /b /a-d', returnStdout: true).split()
-                        echo foundFiles
+                        echo "${foundFiles}"
                         foundFiles.each { file ->
                         build job: 'cloudformation', parameters: [
                             string(name: 'TEMPLATE_FILE', value: file),
