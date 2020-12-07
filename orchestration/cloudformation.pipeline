@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'TEMPLATE_FILE', description: 'Yaml file for cloudformation template.'),
+        string(name: 'TEMPLATE_FILE', description: 'Yaml file for cloudformation template.')
         string(name: 'ACTION', description: 'Cloudformation action to preform.')
     }
     stages {
