@@ -25,12 +25,12 @@ pipeline {
         stage('Upload to S3') {
             steps {
                 bat 'aws s3 sync . s3://cloud-demo-bucket2918 --exclude "*" --include "packerfile --profile produser"'
-                bat 'aws s3 sync ./cloud-formation s3://cloud-demo-bucket2918 --profile produser'
+                bat 'aws s3 sync ./cloud-formation s3://cloud-demo-bucket2918'
             }
         }
         stage('Run Cloudformation') {
             steps {
-                bat "aws cloudformation ${params.ACTION}-stack --stack-name myteststack --template-body s3://cloud-demo-bucket2918/${params.TEMPLATE_FILE} --profile produser"
+                bat "aws cloudformation ${params.ACTION}-stack --stack-name myteststack --template-body s3://cloud-demo-bucket2918/${params.TEMPLATE_FILE}"
             }
         }
     }
