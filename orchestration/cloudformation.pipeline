@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'TEMPLATE_FILE', description: 'Yaml file for cloudformation template.')
-        string(name: 'ACTION', description: 'Cloudformation action to preform.')
+        string(name: 'TEMPLATE_FILE', default: 'iam.yaml', description: 'Yaml file for cloudformation template.')
+        string(name: 'ACTION', default: 'create', description: 'Cloudformation action to preform.')
     }
 
     environment {
