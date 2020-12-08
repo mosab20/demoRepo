@@ -38,6 +38,7 @@ pipeline {
                         sleep 10
                         stackStatus = bat(label: 'Retrieve stack description', script: "aws cloudformation describe-stacks --stack-name IAMstack --region us-east-1 --query Stacks[0].StackStatus --output text", returnStdout: true).trim()
                         stackStatus = stackStatus.trim()
+                        stackStatus = stackStatus.replaceAll("[\n\r]", "");
                         echo "${stackStatus}"
                         echo "CREATE_COMPLETE"
                         println "${stackStatus}"
