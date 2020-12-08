@@ -37,6 +37,7 @@ pipeline {
                     try{
                         retry(3, 10) {
                             stackStatus = bat(label: 'Retrieve stack description', script: "aws cloudformation describe-stacks --stack-name IAMstack --region us-east-1 --query Stacks[0].StackStatus", returnStdout: true)
+                            echo "${stackStatus}"
                             if (stackStatus != "CREATE_COMPLETE") {
                                 throw new Exception()
                             }
