@@ -38,8 +38,8 @@ pipeline {
                         sleep 10
                         stackStatus = bat(label: 'Retrieve stack description', script: "aws cloudformation describe-stacks --stack-name IAMstack --region us-east-1 --query Stacks[0].StackStatus", returnStdout: true).trim()
                         echo "${stackStatus}"
-                        echo "${stackStatus != "\"CREATE_COMPLETE\""}"
-                        if (stackStatus != "\"CREATE_COMPLETE\"") {
+                        echo "${stackStatus != '"CREATE_COMPLETE"'}"
+                        if (stackStatus != '"CREATE_COMPLETE"') {
                             throw new RuntimeException('Stack not completed.')
                         }
                         currentBuild.result = "SUCCESS"
