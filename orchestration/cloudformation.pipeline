@@ -38,6 +38,7 @@ pipeline {
                         if (stackStatus == "CREATE_COMPLETE") {
                             finished = true
                         }
+                        sleep 7
                     }
                 }
             }
