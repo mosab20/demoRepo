@@ -19,7 +19,6 @@ pipeline {
                 bat "aws configure set aws_access_key_id ${AWS_CREDENTIALS_USR}"
                 bat "aws configure set aws_secret_access_key ${AWS_CREDENTIALS_PSW}"
                 bat "aws configure list"
-                echo 'Building..'
             }
         }
         stage('Upload to S3') {
@@ -31,34 +30,20 @@ pipeline {
         stage('Run Cloudformation') {
             steps {
                 script {
-                   // bat "aws cloudformation ${params.ACTION}-stack --stack-name IAMstack --template-url https://cloud-demo-bucket2918.s3.amazonaws.com/${params.TEMPLATE_FILE} --region us-east-1 --parameters ParameterKey=PackerTemplateS3BucketLocation,ParameterValue=cloud-demo-bucket2918 --capabilities CAPABILITY_NAMED_IAM"
-                    //def finished = false
+                    bat "aws cloudformation ${params.ACTION}-stack --stack-name IAMstack --template-url https://cloud-demo-bucket2918.s3.amazonaws.com/${params.TEMPLATE_FILE} --region us-east-1 --parameters ParameterKey=PackerTemplateS3BucketLocation,ParameterValue=cloud-demo-bucket2918 --capabilities CAPABILITY_NAMED_IAM"
                     
-                    retry(2) {
-                        sleep 1
+                    retry(7) {
+                        sleep 10
                         stackStatus = bat(label: 'Retrieve stack description', script: "aws cloudformation describe-stacks --stack-name IAMstack --region us-east-1 --query Stacks[0].StackStatus --output text", returnStdout: true).trim()
                         stackStatus = stackStatus.replaceAll("[\n\r]", "")
-                        stackStatus = "Abdul"+stackStatus
-                        echo "${stackStatus}"
-                        println(stackStatus)
-                        test = stackStatus != "CREATE_COMPLETE"
-                        echo "${test}"
+
                         if (stackStatus != "CREATE_COMPLETE") {
                             throw new RuntimeException('Stack not completed.')
                         }
                         currentBuild.result = "SUCCESS"
                         println("Job was successful. currentBuild.result: ${currentBuild.result}")
                     }
-                
-                    /*retry (3) {
-                        if (!finished && params.ACTION == "create") {
-                            stackStatus = bat(label: 'Retrieve stack description', script: "aws cloudformation describe-stacks --stack-name IAMstack --region us-east-1 --query Stacks[0].StackStatus", returnStdout: true)
-                            if (stackStatus == "CREATE_COMPLETE") {
-                                finished = true
-                            }
-                            sleep 10
-                        }
-                    } */
+
                 }
             }
         }
