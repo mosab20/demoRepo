@@ -34,20 +34,16 @@ pipeline {
                    // bat "aws cloudformation ${params.ACTION}-stack --stack-name IAMstack --template-url https://cloud-demo-bucket2918.s3.amazonaws.com/${params.TEMPLATE_FILE} --region us-east-1 --parameters ParameterKey=PackerTemplateS3BucketLocation,ParameterValue=cloud-demo-bucket2918 --capabilities CAPABILITY_NAMED_IAM"
                     //def finished = false
                     
-                    try{
-                        retry(3, 10) {
-                            stackStatus = bat(label: 'Retrieve stack description', script: "aws cloudformation describe-stacks --stack-name IAMstack --region us-east-1 --query Stacks[0].StackStatus", returnStdout: true)
-                            echo "${stackStatus}"
-                            if (stackStatus != "CREATE_COMPLETE") {
-                                throw new RuntimeException('Stack not completed.')
-                            }
-                            currentBuild.result = "SUCCESS"
-                            println("Job was successful. currentBuild.result: ${currentBuild.result}")
+                    retry(3, 10) {
+                        stackStatus = bat(label: 'Retrieve stack description', script: "aws cloudformation describe-stacks --stack-name IAMstack --region us-east-1 --query Stacks[0].StackStatus", returnStdout: true)
+                        echo "${stackStatus}"
+                        if (stackStatus != "CREATE_COMPLETE") {
+                            throw new RuntimeException('Stack not completed.')
                         }
-                    } catch (e) {
-                        currentBuild.result = "FAILURE"
-                        println("catch exeption. currentBuild.result: ${currentBuild.result}")
+                        currentBuild.result = "SUCCESS"
+                        println("Job was successful. currentBuild.result: ${currentBuild.result}")
                     }
+                
                     /*retry (3) {
                         if (!finished && params.ACTION == "create") {
                             stackStatus = bat(label: 'Retrieve stack description', script: "aws cloudformation describe-stacks --stack-name IAMstack --region us-east-1 --query Stacks[0].StackStatus", returnStdout: true)
