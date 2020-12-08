@@ -33,7 +33,7 @@ pipeline {
                 script {
                     bat "aws cloudformation ${params.ACTION}-stack --stack-name IAMstack --template-url https://cloud-demo-bucket2918.s3.amazonaws.com/${params.TEMPLATE_FILE} --region us-east-1 --parameters ParameterKey=PackerTemplateS3BucketLocation,ParameterValue=cloud-demo-bucket2918 --capabilities CAPABILITY_NAMED_IAM"
                     def finished = false
-                    nnwhile (!finished && params.ACTION == "create") {
+                    while (!finished && params.ACTION == "create") {
                         stackStatus = bat(label: 'Retrieve stack description', script: "aws cloudformation describe-stacks --stack-name IAMstack --region us-east-1 --query Stacks[0].StackStatus", returnStdout: true)
                         if (stackStatus == "CREATE_COMPLETE") {
                             finished = true
