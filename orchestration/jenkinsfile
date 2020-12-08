@@ -35,12 +35,12 @@ pipeline {
                     //def finished = false
                     
                     retry(2) {
-                        sleep 10
+                        sleep 1
                         stackStatus = bat(label: 'Retrieve stack description', script: "aws cloudformation describe-stacks --stack-name IAMstack --region us-east-1 --query Stacks[0].StackStatus --output text", returnStdout: true).trim()
                         stackStatus = stackStatus.replaceAll("[\n\r]", "")
-                        stackStatus += "Abdul"
                         stackStatus = "Abdul"+stackStatus
                         echo "${stackStatus}"
+                        println(stackStatus)
                         echo "${stackStatus}" != "${CREATE_COMPLETE}"
                         if (stackStatus != "CREATE_COMPLETE") {
                             throw new RuntimeException('Stack not completed.')
