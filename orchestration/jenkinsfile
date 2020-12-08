@@ -41,7 +41,7 @@ pipeline {
                         stackStatus = "Abdul"+stackStatus
                         echo "${stackStatus}"
                         println(stackStatus)
-                        echo "${stackStatus}" != "${CREATE_COMPLETE}"
+                        echo "${stackStatus}" != "CREATE_COMPLETE"
                         if (stackStatus != "CREATE_COMPLETE") {
                             throw new RuntimeException('Stack not completed.')
                         }
