@@ -39,6 +39,8 @@ pipeline {
                         stackStatus = bat(label: 'Retrieve stack description', script: "aws cloudformation describe-stacks --stack-name IAMstack --region us-east-1 --query Stacks[0].StackStatus --output text", returnStdout: true).trim()
 
                         echo "${stackStatus}"
+                        echo "CREATE_COMPLETE"
+                        println "${stackStatus}"
                         println "${"CREATE_COMPLETE".class}"
                         echo "${!stackStatus.equals('CREATE_COMPLETE')}"
                         if (!stackStatus.equals('CREATE_COMPLETE')) {
